@@ -1,16 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 @import "tailwindcss";
 
 @theme {
-    --color-soft-green-bg-light: #F8FDF9;
-    --color-soft-green-text-dark: #102B20;
-    --color-soft-green-accent-main: #059669;
-    --color-soft-green-accent-light: #D1FAE5;
-    --color-soft-green-text-muted: #4B5563;
+    --color-green-bg-light: #F8FDF9;
+    --color-green-text-dark: #102B20;
+    --color-green-accent-main: #059669;
+    --color-green-accent-light: #D1FAE5;
+    --color-green-text-muted: #4B5563;
 
-    --color-soft-green-bg-dark: #0F172A;
-    --color-soft-green-text-light: #F1F5F9;
-    --color-soft-green-accent-dark: #224D3D;
-    --color-soft-green-text-medium: #94A3B8;
+    --color-green-bg-dark: #0F172A;
+    --color-green-text-light: #F1F5F9;
+    --color-green-accent-dark: #224D3D;
+    --color-green-text-medium: #94A3B8;
+}
+
+#root,
+.app {
+  height: 100%;
+  width: 100%;
+  font-family: "Manrope", sans-serif;
+  @apply text-gray-500;
 }
 
 .dark {
