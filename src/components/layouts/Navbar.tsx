@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
+import React, { useCallback, useLayoutEffect, useRef, useState, useEffect } from "react";
 import Shuffle from "../commons/Shuffle/Shuffle";
 import SplitText from "../commons/SplitText/SplitText";
 import { gsap } from "gsap";
@@ -48,6 +48,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   onMenuClose,
 }: StaggeredMenuProps) => {
   const [open, setOpen] = useState(false);
+  const [iconColor, setIconColor] = useState(`white`);
+
   const openRef = useRef(false);
 
   const panelRef = useRef<HTMLDivElement | null>(null);
@@ -77,6 +79,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   const [shuffle, setShuffle] = useState<string>(`opacity-0`);
   const [navBlur, setNavBlur] = useState<boolean>(false);
   const scrollThreshold = 50;
+  const [navStartUp, setNavStartUp] = useState(`-translate-y-14`);
 
   setTimeout(() => {
     setShuffle(`opacity-100`);
@@ -92,6 +95,12 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       setNavBlur(false);
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setNavStartUp(`translate-y-0`);
+    }, 250);
+  }, []);
 
   window.addEventListener("scroll", handleScroll);
 
@@ -406,6 +415,17 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     setOpen(target);
 
     if (target) {
+      setTimeout(() => {
+        setIconColor(`black`);
+      }, 340);
+    } else {
+      setTimeout(() => {
+        setIconColor(`white`);
+      }, 200);
+
+    }
+
+    if (target) {
       onMenuOpen?.();
       playOpen();
     } else {
@@ -427,280 +447,282 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   ]);
 
   return (
-    <div
-      className={`sm-scope z-40 ${isFixed
-        ? "fixed top-0 left-0 w-screen h-screen overflow-hidden"
-        : "w-full h-full"
-        }`}
-    >
+    <div className="w-full max-w-7xl h-full fixed top-0 overflow-hidden" id="navbar">
+
       <div
-        className={
-          (className ? className + " " : "") +
-          "staggered-menu-wrapper relative w-full h-full z-40"
-        }
-        style={
-          accentColor
-            ? ({ ["--sm-accent" as any]: accentColor } as React.CSSProperties)
-            : undefined
-        }
-        data-position={position}
-        data-open={open || undefined}
+        className={`sm-scope z-40 transition-transform duration-1000 ease-out ${navStartUp} ${isFixed
+          ? "fixed top-0 left-0 w-screen h-screen overflow-hidden"
+          : "w-full h-full"
+          }`}
       >
         <div
-          ref={preLayersRef}
-          className="sm-prelayers absolute top-0 right-0 bottom-0 pointer-events-none z-[5]"
-          aria-hidden="true"
-        >
-          {(() => {
-            const raw =
-              colors && colors.length
-                ? colors.slice(0, 4)
-                : ["#1e1e22", "#35353c"];
-            let arr = [...raw];
-            if (arr.length >= 3) {
-              const mid = Math.floor(arr.length / 2);
-              arr.splice(mid, 1);
-            }
-            return arr.map((c, i) => (
-              <div
-                key={i}
-                className="sm-prelayer absolute top-0 right-0 h-full w-full translate-x-0"
-                style={{ background: c }}
-              />
-            ));
-          })()}
-        </div>
-
-        <header
-          className={`absolute top-0 left-0 w-full flex px-6 py-4 items-center justify-between pointer-events-none z-20 transition-all duration-500 ${navBlur ? "backdrop-blur-sm" : ""} `}
-          aria-label="Main navigation header"
+          className={
+            (className ? className + " " : "") +
+            "staggered-menu-wrapper relative w-full h-full z-40"
+          }
+          style={
+            accentColor
+              ? ({ ["--sm-accent" as any]: accentColor } as React.CSSProperties)
+              : undefined
+          }
+          data-position={position}
+          data-open={open || undefined}
         >
           <div
-            className="flex items-start select-none pointer-events-auto"
-            aria-label="Logo"
+            ref={preLayersRef}
+            className="sm-prelayers absolute top-0 right-0 bottom-0 pointer-events-none z-[5]"
+            aria-hidden="true"
           >
-            <div className="flex w-full h-full justify-start ms-4 items-center text-center">
-              <SplitText
-                text="Gazy"
-                className={`text-[1.2rem] absolute text-white m-auto sm:text-2xl md:text-3xl ${splitText} transition-opacity duration-500`}
-                delay={100}
-                duration={0.6}
-                ease="power3.out"
-                splitType="chars"
-                from={{ opacity: 0, y: -20 }}
-                to={{ opacity: 1, y: 0 }}
-                threshold={0.1}
-                rootMargin="-100px"
-                textAlign="center"
-                glowText={false}
-              />
-              <Shuffle
-                text="Gazy"
-                className={`text-[1.2rem] text-white absolute sm:text-2xl md:text-3xl ${shuffle} transition-opacity duration-500`}
-                shuffleDirection="right"
-                duration={0.35}
-                animationMode="evenodd"
-                shuffleTimes={1}
-                ease="power3.out"
-                stagger={0.03}
-                threshold={0.1}
-                triggerOnce={true}
-                triggerOnHover={true}
-                respectReducedMotion={true}
-                fontClass="font-funnel"
-              />
+            {(() => {
+              const raw =
+                colors && colors.length
+                  ? colors.slice(0, 4)
+                  : ["#1e1e22", "#35353c"];
+              let arr = [...raw];
+              if (arr.length >= 3) {
+                const mid = Math.floor(arr.length / 2);
+                arr.splice(mid, 1);
+              }
+              return arr.map((c, i) => (
+                <div
+                  key={i}
+                  className="sm-prelayer md:hidden absolute top-0 right-0 h-full w-full translate-x-0"
+                  style={{ background: c }}
+                />
+              ));
+            })()}
+          </div>
+
+          <header
+            className={`absolute top-0 left-0 w-full flex px-6 py-4 items-center justify-between pointer-events-auto z-20 transition-all duration-500 ${navBlur ? "backdrop-blur-sm" : ""} `}
+            aria-label="Main navigation header"
+          >
+            <div
+              className="flex items-start select-none pointer-events-auto"
+              aria-label="Logo"
+            >
+              <div className="flex w-full h-full justify-start ms-2 md:ms-4 items-center text-center">
+                <SplitText
+                  text="Gazy"
+                  className={`text-[2rem] font-bold absolute text-${iconColor} sm:text-white m-auto sm:text-2xl md:text-3xl ${splitText} transition-opacity duration-500`}
+                  delay={100}
+                  duration={0.8}
+                  ease="power3.out"
+                  splitType="chars"
+                  from={{ opacity: 0, y: -20 }}
+                  to={{ opacity: 1, y: 0 }}
+                  threshold={0.1}
+                  rootMargin="-100px"
+                  textAlign="center"
+                  glowText={false}
+                />
+                <Shuffle
+                  text="Gazy"
+                  className={`text-[2rem] font-bold text-${iconColor} sm:text-white absolute sm:text-2xl md:text-3xl ${shuffle} transition-opacity duration-500`}
+                  shuffleDirection="right"
+                  duration={0.35}
+                  animationMode="evenodd"
+                  shuffleTimes={1}
+                  ease="power3.out"
+                  stagger={0.03}
+                  threshold={0.1}
+                  triggerOnce={true}
+                  triggerOnHover={true}
+                  respectReducedMotion={true}
+                  fontClass="font-funnel"
+                />
+              </div>
             </div>
-          </div>
-          <div className="block md:hidden">
-            <button
-              ref={toggleBtnRef}
-              className={`sm-toggle relative inline-flex items-center gap-[0.3rem] bg-transparent border-0 cursor-pointer font-medium leading-none overflow-visible pointer-events-auto ${open ? "text-black" : "text-[#e9e9ef]"
-                }`}
-              aria-label={open ? "Close menu" : "Open menu"}
-              aria-expanded={open}
-              aria-controls="staggered-menu-panel"
-              onClick={toggleMenu}
-              type="button"
-            >
-              <span
-                ref={textWrapRef}
-                className="sm-toggle-textWrap relative inline-block h-[1em] overflow-hidden whitespace-nowrap w-[var(--sm-toggle-width,auto)] min-w-[var(--sm-toggle-width,auto)]"
-                aria-hidden="true"
+            <div className="block md:hidden">
+              <button
+                ref={toggleBtnRef}
+                className={`sm-toggle relative inline-flex items-center gap-[0.3rem] bg-transparent border-0 cursor-pointer font-semibold text-[1.2rem] pt-2 leading-none overflow-visible pointer-events-auto ${open ? "text-black" : "text-[#e9e9ef]"
+                  }`}
+                aria-label={open ? "Close menu" : "Open menu"}
+                aria-expanded={open}
+                aria-controls="staggered-menu-panel"
+                onClick={toggleMenu}
+                type="button"
               >
                 <span
-                  ref={textInnerRef}
-                  className="sm-toggle-textInner flex flex-col leading-none"
-                >
-                  {textLines.map((l, i) => (
-                    <span
-                      className="sm-toggle-line block h-[1em] leading-none"
-                      key={i}
-                    >
-                      {l}
-                    </span>
-                  ))}
-                </span>
-              </span>
-
-              <span
-                ref={iconRef}
-                // className="sm-icon relative w-[14px] h-[14px] shrink-0 inline-flex items-center justify-center [will-change:transform]"
-                aria-hidden="true"
-              >
-                <span
-                  ref={plusHRef}
-                  className="sm-icon-line absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
-                />
-                <span
-                  ref={plusVRef}
-                  className="sm-icon-line sm-icon-line-v absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
-                />
-              </span>
-            </button>
-
-          </div>
-          <div className="hidden md:block">
-            <ul>
-              <li>
-                <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start me-8">
-                  <div className="flex space-x-4">
-                    {items && items.length ? (
-                      items.map((it, idx)=>(
-                    <a
-                      href={it.link}
-                      aria-label={it.label}
-                      data-index={idx + 1}
-                      className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white"
-                    >
-                      <SplitText
-                        text={it.label}
-                        className={`text-[1rem] text-white m-auto sm:text-md md:text-xl`}
-                        delay={100}
-                        duration={0.6}
-                        ease="power3.out"
-                        splitType="chars"
-                        from={{ opacity: 0, y: -20 }}
-                        to={{ opacity: 1, y: 0 }}
-                        threshold={0.1}
-                        rootMargin="-100px"
-                        textAlign="center"
-                        glowText={false}
-                      />
-                    </a>
-
-                      ))
-                    ):(
-                    <a
-                      href="#"
-                      className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white"
-                    >
-                      <SplitText
-                        text="No Items"
-                        className={`text-[1rem] text-white m-auto sm:text-md md:text-xl`}
-                        delay={100}
-                        duration={0.6}
-                        ease="power3.out"
-                        splitType="chars"
-                        from={{ opacity: 0, y: -20 }}
-                        to={{ opacity: 1, y: 0 }}
-                        threshold={0.1}
-                        rootMargin="-100px"
-                        textAlign="center"
-                        glowText={false}
-                      />
-                    </a>
-
-                    )}
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </header>
-
-        <aside
-          id="staggered-menu-panel"
-          ref={panelRef}
-          className="staggered-menu-panel z-50 absolute top-0 right-0 h-full bg-white flex flex-col p-[6em_2em_2em_2em] overflow-y-auto backdrop-blur-[12px]"
-          style={{ WebkitBackdropFilter: "blur(12px)" }}
-          aria-hidden={!open}
-        >
-          <div className="sm-panel-inner flex-1 flex flex-col gap-5">
-            <ul
-              className="sm-panel-list list-none m-0 p-0 flex flex-col gap-2"
-              role="list"
-              data-numbering={displayItemNumbering || undefined}
-            >
-              {items && items.length ? (
-                items.map((it, idx) => (
-                  <li
-                    className="sm-panel-itemWrap relative overflow-hidden leading-none"
-                    key={it.label + idx}
-                  >
-                    <a
-                      className="sm-panel-item relative text-black font-semibold text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]"
-                      href={it.link}
-                      aria-label={it.ariaLabel}
-                      data-index={idx + 1}
-                    >
-                      <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform text-5xl">
-                        {it.label}
-                      </span>
-                    </a>
-                  </li>
-                ))
-              ) : (
-                <li
-                  className="sm-panel-itemWrap relative overflow-hidden leading-none"
+                  ref={textWrapRef}
+                  className="sm-toggle-textWrap relative inline-block h-[1em] overflow-hidden whitespace-nowrap w-[var(--sm-toggle-width,auto)] min-w-[var(--sm-toggle-width,auto)]"
                   aria-hidden="true"
                 >
-                  <span className="sm-panel-item relative text-black font-semibold text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]">
-                    <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
-                      No items
-                    </span>
-                  </span>
-                </li>
-              )}
-            </ul>
-
-            {displaySocials && socialItems && socialItems.length > 0 && (
-              <div
-                className="sm-socials mt-auto pt-8 flex flex-col gap-3"
-                aria-label="Social links"
-              >
-                <h3 className="sm-socials-title m-0 text-base font-medium [color:var(--sm-accent,#ff0000)]">
-                  Socials
-                </h3>
-                <ul
-                  className="sm-socials-list list-none m-0 p-0 flex flex-row items-center gap-4 flex-wrap"
-                  role="list"
-                >
-                  {socialItems.map((s, i) => (
-                    <li key={s.label + i} className="sm-socials-item">
-                      <a
-                        href={s.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="sm-socials-link text-[1.2rem] font-medium text-[#111] no-underline relative inline-block py-[2px] transition-[color,opacity] duration-300 ease-linear"
+                  <span
+                    ref={textInnerRef}
+                    className="sm-toggle-textInner flex flex-col leading-none"
+                  >
+                    {textLines.map((l, i) => (
+                      <span
+                        className="sm-toggle-line block h-[1em] leading-none"
+                        key={i}
                       >
-                        {s.label}
+                        {l}
+                      </span>
+                    ))}
+                  </span>
+                </span>
+
+                <span
+                  ref={iconRef}
+                  // className="sm-icon relative w-[14px] h-[14px] shrink-0 inline-flex items-center justify-center [will-change:transform]"
+                  aria-hidden="true"
+                >
+                  <span
+                    ref={plusHRef}
+                    className="sm-icon-line absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
+                  />
+                  <span
+                    ref={plusVRef}
+                    className="sm-icon-line sm-icon-line-v absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
+                  />
+                </span>
+              </button>
+
+            </div>
+            <div className="hidden md:block">
+              <ul>
+                <li>
+                  <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start me-8">
+                    <div className="flex space-x-4">
+                      {items && items.length ? (
+                        items.map((it, idx) => (
+                          <a
+                            href={it.link}
+                            aria-label={it.label}
+                            data-index={idx + 1}
+                            className="rounded-md px-3 py-2 text-sm font-medium cursor-pointer"
+                          >
+                            <SplitText
+                              text={it.label}
+                              className={`text-[1rem] text-white m-auto transition-all sm:text-md md:text-xl hover:drop-shadow-[0_0_15px_var(--color-green-accent-main)]`}
+                              delay={100}
+                              duration={0.8}
+                              ease="power3.out"
+                              splitType="chars"
+                              from={{ opacity: 0, y: -20 }}
+                              to={{ opacity: 1, y: 0 }}
+                              threshold={0.1}
+                              rootMargin="-100px"
+                              textAlign="center"
+                              glowText={false}
+                            />
+                          </a>
+
+                        ))
+                      ) : (
+                        <a
+                          href="#"
+                          className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white"
+                        >
+                          <SplitText
+                            text="No Items"
+                            className={`text-[1rem] text-white m-auto sm:text-md md:text-xl`}
+                            delay={100}
+                            duration={0.8}
+                            ease="power3.out"
+                            splitType="chars"
+                            from={{ opacity: 0, y: -20 }}
+                            to={{ opacity: 1, y: 0 }}
+                            threshold={0.1}
+                            rootMargin="-100px"
+                            textAlign="center"
+                            glowText={false}
+                          />
+                        </a>
+
+                      )}
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </header>
+
+          <aside
+            id="staggered-menu-panel"
+            ref={panelRef}
+            className="staggered-menu-panel z-50 absolute top-0 right-0 h-full bg-white flex flex-col p-[6em_2em_2em_2em] overflow-y-auto backdrop-blur-[12px] md:!hidden"
+            style={{ WebkitBackdropFilter: "blur(12px)" }}
+            aria-hidden={!open}
+          >
+            <div className="sm-panel-inner flex-1 flex flex-col gap-5">
+              <ul
+                className="sm-panel-list list-none m-0 p-0 flex flex-col gap-2"
+                role="list"
+                data-numbering={displayItemNumbering || undefined}
+              >
+                {items && items.length ? (
+                  items.map((it, idx) => (
+                    <li
+                      className="sm-panel-itemWrap relative overflow-hidden leading-none"
+                      key={it.label + idx}
+                    >
+                      <a
+                        className="sm-panel-item relative text-black font-semibold text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]"
+                        href={it.link}
+                        aria-label={it.ariaLabel}
+                        data-index={idx + 1}
+                      >
+                        <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform text-2xl">
+                          {it.label}
+                        </span>
                       </a>
                     </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        </aside>
-      </div>
+                  ))
+                ) : (
+                  <li
+                    className="sm-panel-itemWrap relative overflow-hidden leading-none"
+                    aria-hidden="true"
+                  >
+                    <span className="sm-panel-item relative text-black font-semibold text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]">
+                      <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
+                        No items
+                      </span>
+                    </span>
+                  </li>
+                )}
+              </ul>
 
-      <style>{`
+              {displaySocials && socialItems && socialItems.length > 0 && (
+                <div
+                  className="sm-socials mt-auto pt-8 flex flex-col gap-3"
+                  aria-label="Social links"
+                >
+                  <h3 className="sm-socials-title m-0 text-base font-medium [color:var(--sm-accent,#ff0000)]">
+                    Socials
+                  </h3>
+                  <ul
+                    className="sm-socials-list list-none m-0 p-0 flex flex-row items-center gap-4 flex-wrap"
+                    role="list"
+                  >
+                    {socialItems.map((s, i) => (
+                      <li key={s.label + i} className="sm-socials-item">
+                        <a
+                          href={s.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="sm-socials-link text-[1rem] font-normal text-[#111] sm:text-[0.8rem] no-underline relative inline-block py-[2px] transition-[color,opacity] duration-300 ease-linear"
+                        >
+                          {s.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </aside>
+        </div>
+
+        <style>{`
 .sm-scope .staggered-menu-wrapper { position: relative; width: 100%; height: 100%; z-index: 40; }
 .sm-scope .staggered-menu-header { position: absolute; top: 0; left: 0; width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 2em; background: transparent; pointer-events: none; z-index: 20; }
 .sm-scope .staggered-menu-header > * { pointer-events: auto; }
 .sm-scope .sm-logo { display: flex; align-items: center; user-select: none; }
 .sm-scope .sm-logo-img { display: block; height: 32px; width: auto; object-fit: contain; }
-.sm-scope .sm-toggle { position: relative; display: inline-flex; align-items: center; gap: 0.3rem; background: transparent; border: none; cursor: pointer; color: #e9e9ef; font-weight: 500; line-height: 1; overflow: visible; }
+.sm-scope .sm-toggle { position: relative; display: inline-flex; align-items: center; gap: 0.3rem; background: transparent; border: none; cursor: pointer; color: #e9e9ef; line-height: 1; overflow: visible; }
 .sm-scope .sm-toggle:focus-visible { outline: 2px solid #ffffffaa; outline-offset: 4px; border-radius: 4px; }
 .sm-scope .sm-line:last-of-type { margin-top: 6px; }
 .sm-scope .sm-toggle-textWrap { position: relative; margin-right: 0.5em; display: inline-block; height: 1em; overflow: hidden; white-space: nowrap; width: var(--sm-toggle-width, auto); min-width: var(--sm-toggle-width, auto); }
@@ -725,7 +747,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 .sm-scope .sm-socials-list .sm-socials-link:hover,
 .sm-scope .sm-socials-list .sm-socials-link:focus-visible { opacity: 1; }
 .sm-scope .sm-socials-link:focus-visible { outline: 2px solid var(--sm-accent, #ff0000); outline-offset: 3px; }
-.sm-scope .sm-socials-link { font-size: 1.2rem; font-weight: 500; color: #111; text-decoration: none; position: relative; padding: 2px 0; display: inline-block; transition: color 0.3s ease, opacity 0.3s ease; }
+.sm-scope .sm-socials-link { text-decoration: none; position: relative; padding: 2px 0; display: inline-block; transition: color 0.3s ease, opacity 0.3s ease; }
 .sm-scope .sm-socials-link:hover { color: var(--sm-accent, #ff0000); }
 .sm-scope .sm-panel-title { margin: 0; font-size: 1rem; font-weight: 600; color: #fff; text-transform: uppercase; }
 .sm-scope .sm-panel-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
@@ -733,10 +755,11 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 .sm-scope .sm-panel-itemLabel { display: inline-block; will-change: transform; transform-origin: 50% 100%; }
 .sm-scope .sm-panel-item:hover { color: var(--sm-accent, #ff0000); }
 .sm-scope .sm-panel-list[data-numbering] { counter-reset: smItem; }
-.sm-scope .sm-panel-list[data-numbering] .sm-panel-item::after { counter-increment: smItem; content: counter(smItem, decimal-leading-zero); position: absolute; top: 0.1em; right: 3.2em; font-size: 18px; font-weight: 400; color: var(--sm-accent, #ff0000); letter-spacing: 0; pointer-events: none; user-select: none; opacity: var(--sm-num-opacity, 0); }
+.sm-scope .sm-panel-list[data-numbering] .sm-panel-item::after { counter-increment: smItem; content: counter(smItem, decimal-leading-zero); position: absolute; top: 1.5em; right: 3em; font-size: 18px; font-weight: 400; color: var(--sm-accent, #ff0000); letter-spacing: 0; pointer-events: none; user-select: none; opacity: var(--sm-num-opacity, 0); }
 @media (max-width: 1024px) { .sm-scope .staggered-menu-panel { position: absolute; top: 0; right: 0; width: clamp(360px, 38vw, 420px); height: 100%; background: white; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; padding: 6em 2em 2em 2em; overflow-y: auto; z-index: 10; }
 @media (max-width: 640px) { .sm-scope .staggered-menu-panel { width: 100%; left: 0; right: 0; } .sm-scope .staggered-menu-wrapper[data-open] .sm-logo-img { filter: invert(100%); } }
       `}</style>
+      </div>
     </div>
   );
 };

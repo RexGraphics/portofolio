@@ -2,6 +2,7 @@ import { useState } from "react";
 import HeroBackground from "./components/layouts/HeroBackground";
 import Navbar from "./components/layouts/Navbar";
 import ClickSpark from "./components/commons/ClickSpark/ClickSpark";
+import Home from "./components/sections/Home";
 function App() {
   const menuItems = [
     { label: "Home", ariaLabel: "Go to home page", link: "/" },
@@ -18,7 +19,7 @@ function App() {
   const [startAll, setStartAll] = useState<boolean>(false);
   setTimeout(() => {
     setStartAll(true);
-  });
+  },7000);
   return (
     <div className="w-screen h-[200svh] bg-black overflow-hidden">
       <HeroBackground />
@@ -30,7 +31,7 @@ function App() {
         duration={400}
       >
         {startAll && (
-          <div className="w-full h-full fixed top-0" id="navbar">
+          <div className="w-full max-w-full flex justify-center items-center relative">
             <Navbar
               position="right"
               items={menuItems}
@@ -45,6 +46,7 @@ function App() {
               accentColor="#059669"
               onMenuOpen={() => console.log("Menu opened")}
               onMenuClose={() => console.log("Menu closed")} isFixed={false} />
+            <Home />
           </div>
         )}
       </ClickSpark>
