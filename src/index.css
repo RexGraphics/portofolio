@@ -1,29 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Single:wght@100..900&display=swap');
 @import "tailwindcss";
 
 @theme {
-    --color-green-bg-light: #F8FDF9;
-    --color-green-text-dark: #102B20;
-    --color-green-accent-main: #059669;
-    --color-green-accent-light: #D1FAE5;
-    --color-green-text-muted: #4B5563;
+  --color-green-bg-light: #F8FDF9;
+  --color-green-text-dark: #102B20;
+  --color-green-accent-main: #059669;
+  --color-green-accent-light: #D1FAE5;
+  --color-green-text-muted: #4B5563;
 
-    --color-green-bg-dark: #0F172A;
-    --color-green-text-light: #F1F5F9;
-    --color-green-accent-dark: #224D3D;
-    --color-green-text-medium: #94A3B8;
+  --color-green-bg-dark: #0F172A;
+  --color-green-text-light: #F1F5F9;
+  --color-green-accent-dark: #224D3D;
+  --color-green-text-medium: #94A3B8;
+
+  --font-manrope: "Manrope", sans-serif;
+  --font-bitcount: "Bitcount Grid Single", monospace;
+  --font-funnel: "Funnel Display", sans-serif;
+  --font-system: system-ui, sans-serif;
+
 }
 
 #root,
 .app {
   height: 100%;
   width: 100%;
-  font-family: "Manrope", sans-serif;
+  font-family: "Funnel Display", system-ui;
   @apply text-gray-500;
 }
 
 .dark {
-    --tw-bg-opacity: 1;
-    background-color: var(--color-soft-green-bg-dark) !important; 
-    color: var(--color-soft-green-text-light) !important;
+  --tw-bg-opacity: 1;
+  background-color: var(--color-soft-green-bg-dark) !important;
+  color: var(--color-soft-green-text-light) !important;
 }

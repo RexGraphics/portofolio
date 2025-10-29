@@ -19,6 +19,7 @@ export interface SplitTextProps {
   rootMargin?: string;
   tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
   textAlign?: React.CSSProperties['textAlign'];
+  glowText?: boolean;
   onLetterAnimationComplete?: () => void;
 }
 
@@ -35,6 +36,7 @@ const SplitText: React.FC<SplitTextProps> = ({
   rootMargin = '-100px',
   tag = 'p',
   textAlign = 'center',
+  glowText = true,
   onLetterAnimationComplete
 }) => {
   const ref = useRef<HTMLParagraphElement>(null);
@@ -55,7 +57,9 @@ const SplitText: React.FC<SplitTextProps> = ({
   }
 
   useEffect(() => {
-    handleGlow();
+    if(glowText){
+      handleGlow();
+    }
     if (document.fonts.status === 'loaded') {
       setFontsLoaded(true);
     } else {
