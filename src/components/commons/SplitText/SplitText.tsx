@@ -57,7 +57,7 @@ const SplitText: React.FC<SplitTextProps> = ({
   }
 
   useEffect(() => {
-    if(glowText){
+    if (glowText) {
       handleGlow();
     }
     if (document.fonts.status === 'loaded') {
@@ -79,7 +79,7 @@ const SplitText: React.FC<SplitTextProps> = ({
       if (el._rbsplitInstance) {
         try {
           el._rbsplitInstance.revert();
-        } catch (_) { }
+        } catch { console.log('error di file splittext') }
         el._rbsplitInstance = undefined;
       }
 
@@ -144,7 +144,7 @@ const SplitText: React.FC<SplitTextProps> = ({
         });
         try {
           splitInstance.revert();
-        } catch (_) { }
+        } catch { console.log('error di file splittext') }
         el._rbsplitInstance = undefined;
       };
     },

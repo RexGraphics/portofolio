@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Shuffle from "../commons/Shuffle/Shuffle";
 import SplitText from "../commons/SplitText/SplitText";
 

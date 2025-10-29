@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react";
-import Aurora from "./components/backgrounds/Aurora/Aurora";
-import Particles from "./components/backgrounds/Particles/Particles";
-import SplitText from "./components/commons/SplitText/SplitText";
+import { useState } from "react";
 import HeroBackground from "./components/layouts/HeroBackground";
 import Navbar from "./components/layouts/Navbar";
 function App() {
