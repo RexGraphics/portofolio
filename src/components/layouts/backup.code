@@ -1,0 +1,110 @@
+import React from "react";
+
+const Download: React.FC = () => {
+    const downloadFile = () => {
+        const link = document.createElement('a');
+        link.href = '/public/cv-ghazwan.pdf';
+        link.download = 'ghazwan_fikri_maulana_-_CV.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+    return (
+        <>
+            <button onClick={downloadFile}
+                className="px-6 py-3 bg-[#059669] text-white font-semibold rounded-lg shadow-md hover:bg-[#047857] transition duration-300 z-[9999] relative"
+            >
+                Download my CV
+            </button>
+
+        </>
+    );
+};
+
+export default Download;
+
+
+import React, { useState, type MouseEvent } from 'react';
+
+// PDF HARUS DI /public/cv-ghazwan.pdf
+const PDF_FILE_PATH = '/public/cv-ghazwan.pdf';
+const DOWNLOAD_FILENAME = 'Ghazwan_Fikri_Maulana_CV.pdf';
+
+const Download: React.FC = () => {
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+    const handleDownload = (e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        const link = document.createElement('a');
+        link.href = PDF_FILE_PATH;
+        link.download = DOWNLOAD_FILENAME;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    return (
+        <>
+            {/* BUTTON UTAMA */}
+            <button
+                onClick={() => setIsModalOpen(true)}
+                className="px-6 py-3 bg-[#059669] text-white font-semibold rounded-lg shadow-md hover:bg-[#047857] transition duration-300 z-[9999] relative"
+            >
+                Download my CV
+            </button>
+
+            {/* MODAL - Z-INDEX TERtinggi */}
+            {isModalOpen && (
+                <div
+                    className="fixed inset-0 z-[2147483647] bg-black bg-opacity-80 flex justify-center items-center p-4"
+                    onClick={() => setIsModalOpen(false)}
+                    data-modal
+                >
+                    <div
+                        className="bg-gray-900 rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Header */}
+                        <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+                            <h2 className="text-xl font-bold text-gray-100">Review My CV</h2>
+                            <button
+                                onClick={() => setIsModalOpen(false)}
+                                className="text-gray-400 hover:text-white text-3xl font-light"
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        {/* Body */}
+                        <div className="flex-1 p-4 flex flex-col items-center gap-4 overflow-y-auto">
+                            <p className="text-sm text-gray-400 text-center">
+                                Untuk preview terbaik, silakan download.
+                            </p>
+
+                            {/* PDF Preview */}
+                            <div className="w-full h-96 bg-gray-800 border border-gray-700 rounded overflow-hidden">
+                                <iframe
+                                    src={PDF_FILE_PATH}
+                                    title="CV Preview"
+                                    className="w-full h-full"
+                                    style={{ border: 'none' }}
+                                    allowFullScreen
+                                />
+                            </div>
+
+                            {/* Download Button */}
+                            <button
+                                onClick={handleDownload}
+                                className="px-8 py-3 bg-[#059669] text-white font-semibold rounded-lg hover:bg-[#047857] transition duration-300 shadow-lg z-[9999] relative"
+                            >
+                                Download CV (PDF)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
+    );
+};
+
+export default Download;

@@ -446,10 +446,10 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   ]);
 
   return (
-    <div className="w-full max-w-7xl h-full fixed top-0 overflow-hidden" id="navbar">
+    <div className={`w-full max-w-7xl h-full fixed top-0 overflow-hidden z-80 ${open? "pointer-events-auto" :"pointer-events-none"}`} id="navbar">
 
       <div
-        className={`sm-scope z-40 transition-transform duration-1000 ease-out ${navStartUp} ${isFixed
+        className={`sm-scope z-40 transition-transform duration-1000 ease-out ${navStartUp} ${open? "pointer-events-auto" :"pointer-events-none"} ${isFixed
           ? "fixed top-0 left-0 w-screen h-screen overflow-hidden"
           : "w-full h-full"
           }`}
@@ -457,7 +457,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         <div
           className={
             (className ? className + " " : "") +
-            "staggered-menu-wrapper relative w-full h-full z-40"
+            "staggered-menu-wrapper relative w-full h-full z-40" + open? "pointer-events-auto" :"pointer-events-none"
           }
           style={
             accentColor
@@ -469,7 +469,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         >
           <div
             ref={preLayersRef}
-            className="sm-prelayers absolute top-0 right-0 bottom-0 pointer-events-none z-[5]"
+            className="sm-prelayers absolute top-0 right-0 bottom-0 pointer-events-auto z-[5]"
             aria-hidden="true"
           >
             {(() => {
@@ -493,7 +493,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           </div>
 
           <header
-            className={`absolute top-0 left-0 w-full flex px-6 py-4 items-center justify-between pointer-events-auto z-20 transition-all duration-500 ${navBlur ? "backdrop-blur-sm" : ""} `}
+            className={`absolute top-0 left-0 w-full flex px-6 py-4 items-center justify-between pointer-events-auto z-20 transition-all duration-500 ${navBlur && !open ? "backdrop-blur-sm" : ""} `}
             aria-label="Main navigation header"
           >
             <div
@@ -503,7 +503,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
               <div className="flex w-full h-full justify-start ms-2 md:ms-4 items-center text-center">
                 <SplitText
                   text="Gazy"
-                  className={`text-[2rem] font-bold absolute text-${iconColor} sm:text-white m-auto sm:text-2xl md:text-3xl ${splitText} transition-opacity duration-500`}
+                  className={`text-[2rem] font-bold absolute text-${iconColor} sm:text-white sm:text-2xl md:text-3xl ${splitText} transition-all duration-200 ${open? "sm:drop-shadow-[0_0_4px_var(--color-green-accent-main)]":""}`}
                   delay={100}
                   duration={0.8}
                   ease="power3.out"
@@ -517,7 +517,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                 />
                 <Shuffle
                   text="Gazy"
-                  className={`text-[2rem] font-bold text-${iconColor} sm:text-white absolute sm:text-2xl md:text-3xl ${shuffle} transition-opacity duration-500`}
+                  className={`text-[2rem] font-bold absolute text-${iconColor} sm:text-white sm:text-2xl md:text-3xl ${shuffle} transition-all duration-200 ${open? "sm:drop-shadow-[0_0_4px_var(--color-green-accent-main)]":""} sm:mt-px`}
                   shuffleDirection="right"
                   duration={0.35}
                   animationMode="evenodd"
@@ -642,7 +642,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           <aside
             id="staggered-menu-panel"
             ref={panelRef}
-            className="staggered-menu-panel z-50 absolute top-0 right-0 h-full bg-white flex flex-col p-[6em_2em_2em_2em] overflow-y-auto backdrop-blur-[12px] md:!hidden"
+            className={`staggered-menu-panel z-50 absolute top-0 right-0 h-full bg-white flex flex-col p-[6em_2em_2em_2em] overflow-y-auto backdrop-blur-[12px] md:!hidden ${open? "pointer-events-auto" :"pointer-events-none"}`}
             style={{ WebkitBackdropFilter: "blur(12px)" }}
             aria-hidden={!open}
           >
