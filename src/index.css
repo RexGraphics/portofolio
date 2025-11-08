@@ -33,6 +33,7 @@
   width: 100%;
   font-family: "Funnel Display", system-ui;
   @apply text-gray-500;
+  scroll-behavior: smooth;
 }
 
 .dark {

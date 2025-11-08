@@ -22,7 +22,7 @@ const HeroBackground = () => {
     }, []);
     return (
         <>
-            <div className={`w-full h-3/4 transition-opacity duration-4000 pointer-events-auto ${bgOpacity}`}>
+            <div className={`w-full h-[200vh] transition-opacity duration-4000 pointer-events-auto ${bgOpacity}`}>
                 <Aurora
                     colorStops={["#059669", "#102B20", "#D1FAE5"]}
                     blend={1000}

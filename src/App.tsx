@@ -1,10 +1,20 @@
-import { useState } from "react";
+'use client';
+
+import { useEffect, useState } from "react";
+// import LenisSmoothScroll from 'lenis/react'
+import Lenis from 'lenis';
 import HeroBackground from "./components/layouts/HeroBackground";
 import Navbar from "./components/layouts/Navbar";
 import ClickSpark from "./components/commons/ClickSpark/ClickSpark";
 import Home from "./components/sections/Home";
 import AboutMe from "./components/sections/AboutMe";
+import Career from "./components/sections/Career";
+// import ScrollOverlaySection from "./components/sections/ScrollOverlaySection";
+
 function App() {
+  const [lenisRef, setLenis] = useState<Lenis | null>(null);
+  const [rafState, setRaf] = useState<number | null>(null);
+
   const menuItems = [
     { label: "Home", ariaLabel: "Go to home page", link: "/" },
     { label: "Project", ariaLabel: "View our services", link: "/services" },
@@ -20,9 +30,34 @@ function App() {
   const [startAll, setStartAll] = useState<boolean>(false);
   setTimeout(() => {
     setStartAll(true);
-  }, 7000);
+  });
+
+  useEffect(() => {
+    const scroller = new Lenis();
+    let rf;
+
+    function raf(time: number) {
+      scroller.raf(time * .5);
+      requestAnimationFrame(raf);
+    }
+
+    // eslint-disable-next-line prefer-const
+    rf = requestAnimationFrame(raf);
+    setRaf(rf);
+    setLenis(scroller);
+
+    return () => {
+      if (lenisRef) {
+        if(rafState != null){
+          cancelAnimationFrame(rafState);
+        }
+        lenisRef.destroy();
+      }
+    }
+  }, []);
   return (
-    <div className="w-screen h-[200svh] bg-black overflow-x-hidden">
+    // <LenisSmoothScroll root>
+    <div className="w-screen min-h-[500svh] h-full bg-black overflow-x-hidden">
       <HeroBackground />
       <ClickSpark
         sparkColor='#fff'
@@ -32,7 +67,7 @@ function App() {
         duration={400}
       >
         {startAll && (
-          <div className="w-full max-w-full h-full flex justify-center items-center relative">
+          <main className="w-full h-full flex justify-center items-center relative">
             <Navbar
               position="right"
               items={menuItems}
@@ -49,10 +84,12 @@ function App() {
               onMenuClose={() => console.log("Menu closed")} isFixed={false} />
             <Home />
             <AboutMe />
-          </div>
+            <Career />
+          </main>
         )}
       </ClickSpark>
     </div>
+    // </LenisSmoothScroll>
   );
 }
 

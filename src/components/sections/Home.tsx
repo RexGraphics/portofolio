@@ -38,7 +38,7 @@ const Home = () => {
     }, []);
 
     return (
-        <div className="w-full max-w-7xl min-h-screen top-0 absolute overflow-hidden" id="home-section">
+        <section className="w-full max-w-7xl min-h-screen top-0 absolute overflow-hidden" id="home-section">
             <div className="w-full h-152 absolute flex flex-col justify-center items-center md:flex-row mt-40">
                 <div className="w-full h-28 absolute text-center -translate-y-70 overflow-hidden flex items-start top-48 justify-center">
                     <p className={`typograph ms-56 sm:ms-0 font-rubik text-7xl sm:text-9xl font-bold text-transparent tracking-[1.5rem] sm:tracking-[3rem] absolute top-0 transition-transform duration-1000 ${start ? "translate-y-12 sm:translate-y-0" : "translate-y-30 sm:translate-y-42"}`}>
@@ -144,7 +144,7 @@ const Home = () => {
 
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 

@@ -446,7 +446,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   ]);
 
   return (
-    <div className={`w-full max-w-7xl h-full fixed top-0 overflow-hidden z-80 ${open? "pointer-events-auto" :"pointer-events-none"}`} id="navbar">
+    <nav className={`w-full max-w-7xl h-full fixed top-0 overflow-hidden z-80 ${open? "pointer-events-auto" :"pointer-events-none"}`} id="navbar">
 
       <div
         className={`sm-scope z-40 transition-transform duration-1000 ease-out ${navStartUp} ${open? "pointer-events-auto" :"pointer-events-none"} ${isFixed
@@ -469,7 +469,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         >
           <div
             ref={preLayersRef}
-            className="sm-prelayers absolute top-0 right-0 bottom-0 pointer-events-auto z-[5]"
+            className="sm-prelayers absolute top-0 right-0 bottom-0 pointer-events-auto z-5"
             aria-hidden="true"
           >
             {(() => {
@@ -493,7 +493,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           </div>
 
           <header
-            className={`absolute top-0 left-0 w-full flex px-6 py-4 items-center justify-between pointer-events-auto z-20 transition-all duration-500 ${navBlur && !open ? "backdrop-blur-sm" : ""} `}
+            className={`absolute top-0 left-0 w-full flex px-6 py-4 items-center justify-between pointer-events-auto z-20 transition-all duration-500 rounded-lg ${navBlur && !open ? "backdrop-blur-sm" : ""} `}
             aria-label="Main navigation header"
           >
             <div
@@ -759,7 +759,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 @media (max-width: 640px) { .sm-scope .staggered-menu-panel { width: 100%; left: 0; right: 0; } .sm-scope .staggered-menu-wrapper[data-open] .sm-logo-img { filter: invert(100%); } }
       `}</style>
       </div>
-    </div>
+    </nav>
   );
 };
 
